@@ -12,33 +12,35 @@ conn = psycopg2.connect(
 
 cur = conn.cursor()
 
-with open('north_data/customers_data.csv', encoding='utf-8') as file:
-    csv.field_size_limit(10**8)
-    for line in csv.reader(file):
-        if line[0] == 'customer_id':
-            continue
-        try:
-            cur.execute('INSERT INTO customers VALUES (%s, %s, %s)', (line[0], line[1], line[2]))
-
-        finally:
-            conn.commit()
+# with open('north_data/customers_data.csv', encoding='utf-8') as file:
+#     csv.field_size_limit(10**8)
+#     for line in csv.reader(file):
+#         if line[0] == 'customer_id':
+#             continue
+#         try:
+#             cur.execute('INSERT INTO customers VALUES (%s, %s, %s)', (line[0], line[1], line[2]))
+#
+#         finally:
+#             conn.commit()
 
 with open('north_data/employees_data.csv', encoding='utf-8') as file:
     csv.field_size_limit(10**8)
-    for line in csv.reader(file):
-        if line[0] == 'employee_id':
-            continue
+    reader = csv.reader(file)
+    next(reader) #пропуск header
+    for line in reader:
+        # if line[0] == 'employee_id':
+        #     continue
         try:
-            cur.execute('INSERT INTO employees VALUES (%s, %s, %s, %s, %s, %s)',
+            cur.execute('INSERT INTO testing_employees VALUES (%s, %s, %s, %s, %s, %s)',
                         (line[0], line[1], line[2], line[3], line[4], line[5]))
         finally:
             conn.commit()
 
 with open('north_data/orders_data.csv', encoding='utf-8') as file:
     csv.field_size_limit(10**8)
-    for line in csv.reader(file):
-        if line[0] == 'order_id':
-            continue
+    reader = csv.reader(file)
+    next(reader)  # пропуск header
+    for line in reader:
         try:
             cur.execute('INSERT INTO orders VALUES (%s, %s, %s, %s, %s)',
                         (line[0], line[1], line[2], line[3], line[4]))
